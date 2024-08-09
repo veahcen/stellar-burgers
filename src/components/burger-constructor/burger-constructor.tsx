@@ -24,6 +24,7 @@ export const BurgerConstructor: FC = () => {
 
   const data: string[] = [
     ...constructorItems.ingredients.map((ingredient) => ingredient._id),
+    constructorItems.bun?._id,
     constructorItems.bun?._id
   ].filter((id): id is string => id !== undefined);
 

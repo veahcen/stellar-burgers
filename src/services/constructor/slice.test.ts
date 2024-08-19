@@ -1,5 +1,5 @@
 import { TConstructorIngredient } from '@utils-types';
-import constructorReducer, {
+import constructorSlice, {
   addIngredients,
   removeIngredients,
   resetState,
@@ -42,7 +42,7 @@ describe('Тесты Constructor Slice', () => {
       ...buns[0],
       id: 'unique-id'
     };
-    const newState = constructorReducer(clearInitialState, addIngredients(bun));
+    const newState = constructorSlice(clearInitialState, addIngredients(bun));
     expect(newState.bun).toEqual(bun);
   });
 
@@ -51,7 +51,7 @@ describe('Тесты Constructor Slice', () => {
       ...buns[1],
       id: 'unique-id'
     };
-    const newState = constructorReducer(
+    const newState = constructorSlice(
       filledInitialState,
       addIngredients(newBun)
     );
@@ -63,7 +63,7 @@ describe('Тесты Constructor Slice', () => {
       ...notBuns[0],
       id: 'unique-id'
     };
-    const newState = constructorReducer(
+    const newState = constructorSlice(
       clearInitialState,
       addIngredients(ingredient)
     );
@@ -76,7 +76,7 @@ describe('Тесты Constructor Slice', () => {
       ...notBuns[2],
       id: 'unique-id'
     };
-    const newState = constructorReducer(
+    const newState = constructorSlice(
       filledInitialState,
       addIngredients(ingredient)
     );
@@ -85,7 +85,7 @@ describe('Тесты Constructor Slice', () => {
   });
 
   test('Удаление всех ингредиентов', () => {
-    const newState = constructorReducer(
+    const newState = constructorSlice(
       filledInitialState,
       removeIngredients([])
     );
@@ -95,21 +95,18 @@ describe('Тесты Constructor Slice', () => {
   });
 
   test('Сброс состояния', () => {
-    const newState = constructorReducer(filledInitialState, resetState());
+    const newState = constructorSlice(filledInitialState, resetState());
     expect(newState).toEqual(clearInitialState);
   });
 
   test('Перемещение ингредиента вверх', () => {
-    const newState = constructorReducer(
-      filledInitialState,
-      moveIngredientUp(1)
-    );
+    const newState = constructorSlice(filledInitialState, moveIngredientUp(1));
     expect(newState.ingredients[0]).toEqual(filledInitialState.ingredients[1]);
     expect(newState.ingredients[1]).toEqual(filledInitialState.ingredients[0]);
   });
 
   test('Перемещение ингредиента вниз', () => {
-    const newState = constructorReducer(
+    const newState = constructorSlice(
       filledInitialState,
       moveIngredientDown(0)
     );
@@ -118,10 +115,7 @@ describe('Тесты Constructor Slice', () => {
   });
 
   test('Удаление ингредиента', () => {
-    const newState = constructorReducer(
-      filledInitialState,
-      deleteIngredient(0)
-    );
+    const newState = constructorSlice(filledInitialState, deleteIngredient(0));
     expect(newState.ingredients.length).toBe(1);
     expect(newState.ingredients[0]).toEqual(filledInitialState.ingredients[1]);
   });

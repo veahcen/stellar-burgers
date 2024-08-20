@@ -1,40 +1,31 @@
 import * as authTokens from '../fixtures/token.json';
 import * as orderData from '../fixtures/order.json';
 
+const burgerCollect =
+  '.constructor-element > .constructor-element__row > .constructor-element__text';
+const bun = `[data-cy=bun]`;
+const main = `[data-cy=main]`;
+const sauce = `[data-cy=sauce]`;
+const commonButton = `.common_button`;
+
 describe('Интеграционные тесты для страницы конструктора', () => {
   beforeEach(() => {
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients.json' });
-    cy.visit('http://localhost:4000/');
+    cy.visit('/');
   });
   describe('Тестирование загрузки ингредиентов и добавления их в конструктор', () => {
     it('Добавление булок и ингредиентов в заказ', () => {
       cy.request('/api/ingredients');
 
-      cy.get(`[data-cy=bun] > .common_button`).first().click();
-      cy.get(`[data-cy=main] > .common_button`).first().click();
-      cy.get(`[data-cy=sauce] > .common_button`).first().click();
+      cy.get(`${bun} > ${commonButton}`).first().click();
+      cy.get(`${main} > ${commonButton}`).first().click();
+      cy.get(`${sauce} > ${commonButton}`).first().click();
 
       const burgerConstructor = {
-        bunTop: cy
-          .get(
-            '.constructor-element > .constructor-element__row > .constructor-element__text'
-          )
-          .first(),
-        mainIngredient: cy
-          .get(
-            '.constructor-element > .constructor-element__row > .constructor-element__text'
-          )
-          .eq(1),
-        sauceIngredient: cy
-          .get(
-            '.constructor-element > .constructor-element__row > .constructor-element__text'
-          )
-          .eq(2),
-        bunBottom: cy
-          .get(
-            '.constructor-element > .constructor-element__row > .constructor-element__text'
-          )
-          .last()
+        bunTop: cy.get(burgerCollect).first(),
+        mainIngredient: cy.get(burgerCollect).eq(1),
+        sauceIngredient: cy.get(burgerCollect).eq(2),
+        bunBottom: cy.get(burgerCollect).last()
       };
 
       burgerConstructor.bunTop.contains('Краторная булка N-200i (верх)');
@@ -48,7 +39,7 @@ describe('Интеграционные тесты для страницы кон
 
   describe('Тестирование работы модального окна для ингредиента', () => {
     it('Открытие модального окна', () => {
-      cy.get(`[data-cy=bun]`).first().click();
+      cy.get(bun).first().click();
 
       const modal = cy.get('#modals > div:first-child');
       const header = modal.get('div:first-child > h3');
@@ -57,7 +48,7 @@ describe('Интеграционные тесты для страницы кон
     });
 
     it('Закрытие модального окна по крестику', () => {
-      cy.get(`[data-cy=bun]`).first().click();
+      cy.get(bun).first().click();
 
       const modal = cy.get('#modals > div:first-child').as('modal');
       const button = modal.get('div:first-child > button > svg').click();
@@ -66,7 +57,7 @@ describe('Интеграционные тесты для страницы кон
     });
 
     it('Закрытие модального окна по клику на оверлей', () => {
-      cy.get(`[data-cy=bun]`).first().click();
+      cy.get(bun).first().click();
 
       const modal = cy.get('#modals > div:first-child').as('modal');
       const overlay = modal.get('#modals > div:nth-child(2)');
@@ -94,16 +85,16 @@ describe('Интеграционные тесты для страницы кон
       cy.wait(500);
 
       // Посещаем страницу
-      cy.visit('http://localhost:4000/');
+      cy.visit('/');
 
       // Ожидаем, пока загрузится информация о пользователе
       cy.wait('@getUser');
     });
 
     it('Все этапы создания заказа', () => {
-      cy.get(`[data-cy=bun] > .common_button`).first().click();
-      cy.get(`[data-cy=main] > .common_button`).first().click();
-      cy.get(`[data-cy=sauce] > .common_button`).first().click();
+      cy.get(`${bun} > ${commonButton}`).first().click();
+      cy.get(`${main} > ${commonButton}`).first().click();
+      cy.get(`${sauce} > ${commonButton}`).first().click();
 
       cy.get(
         '#root > div > main > div > section:nth-child(2) > div > button'

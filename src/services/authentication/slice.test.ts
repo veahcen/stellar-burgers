@@ -1,4 +1,4 @@
-import { authSlice, setUser, setIsAuthChecked } from './slice';
+import { authSlice, setUser, setIsAuthChecked, initialState } from './slice';
 import {
   loginUserThunk,
   logoutUserThunk,
@@ -6,13 +6,6 @@ import {
   updateUserThunk
 } from './actions';
 import { TUser } from '@utils-types';
-
-// Тестовые данные
-const initialState = {
-  user: null,
-  isAuthChecked: false,
-  error: null
-};
 
 const testUser: TUser = {
   name: 'Test User',

@@ -7,7 +7,7 @@ import {
   postOrderThunk
 } from './actions';
 
-interface IOrderState {
+export interface IOrderState {
   order: TOrder | null;
   name: string | null;
   error: string | null | undefined;
@@ -115,3 +115,4 @@ export const {
 } = orderSlice.selectors;
 
 export const { resetOrder } = orderSlice.actions;
+export default orderSlice.reducer;
